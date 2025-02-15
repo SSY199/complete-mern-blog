@@ -3,7 +3,7 @@ import { Alert, Button, Label, Spinner } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
 import { TextInput } from "flowbite-react";
 import { useState } from "react";
-import OAuth from "../Components/Oauth";
+import Oauth from "../Components/Oauth";
 //import './Signup.css';
 
 function Signup() {
@@ -113,7 +113,7 @@ function Signup() {
                 "Sign Up"
               )}
             </Button>
-            <OAuth></OAuth>
+            <Oauth></Oauth>
           </form>
           <div className="flex justify-center gap-3">
             <span>Already have an Account?</span>
