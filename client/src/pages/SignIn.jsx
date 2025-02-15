@@ -4,7 +4,7 @@ import { TextInput } from "flowbite-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signInFailure, signInStart, signInSuccess } from "../redux/user/userSlice.js";
-import OAuth from "../Components/OAuth";
+import Oauth from "../Components/OAuth";
 
 function SignIn() {
   const [formData, setFormData] = useState({
@@ -83,7 +83,7 @@ function SignIn() {
                 )
               }
             </Button>
-            <OAuth></OAuth>
+            <Oauth></Oauth>
           </form>
           <div className="flex justify-center gap-3 mt-4">
             <span>Dont have an Account?</span>
