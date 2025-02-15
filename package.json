@@ -20,7 +20,9 @@
   },
   "homepage": "https://github.com/SSY199/complete-mern-blog#readme",
   "dependencies": {
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "mongoose": "^8.10.1",
     "nodemon": "^3.1.9"
   }
 }
