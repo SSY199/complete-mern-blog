@@ -1,0 +1,10 @@
+.header-transition {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+.header-transition:hover {
+  opacity: 1;
+  transform: translateY(0);
+}

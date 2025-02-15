@@ -1,23 +1,25 @@
 import { Button, Navbar, TextInput } from "flowbite-react";
 import { Link, useLocation } from "react-router-dom";
 import { FaMoon, FaSearch } from "react-icons/fa";
+//import './header.css' // Import your CSS file
+
 function Header() {
   const path = useLocation().pathname;
   return (
-    <Navbar className="border-b-2">
+    <Navbar className=" bg-purple-500 border-purple-950 border-b-2 header-transition">
       <Link to={"/"}>
         <h1 className="self-center whitespace-nowrap text-xl sm:text-2xl font-bold dark:text-white">
           <span className="px-2 py-1 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 rounded-lg text-black">DEV</span>NINJAS
         </h1>
       </Link>
-      <form className="flex items-center">
+      <form className="flex items-center justify-center">
         <TextInput
           className="hidden lg:inline"
           type="text"
           placeholder="Search..."
           icon={FaSearch}
         />
-        <Button className='w-12 h-10 lg:hidden shadow-3xl' color='gray' pill type="submit">
+        <Button className='w-12 h-10 lg:hidden items-center shadow-3xl' color='gray' pill type="submit">
           <FaSearch />
         </Button>
       </form>
@@ -48,4 +50,5 @@ function Header() {
     </Navbar>
   );
 }
+
 export default Header;
