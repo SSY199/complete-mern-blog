@@ -5,7 +5,7 @@ function FooterCom() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <Footer className="border-t-8 border-purple-500 bg-purple-600 text-white">
+    <Footer className="border-t-8 border-purple-500 dark:border-cyan-500 bg-purple-600 text-white">
       <div className="w-full max-w-7xl mx-auto">
         <div className="grid w-full justify-between sm:flex md:grid-cols-1">
           <div className="mt-5">

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { TextInput } from "flowbite-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { signInFailure, signInStart, signInSuccess } from "../redux/user/userSlice.js";
+import { signInFailure, signInStart, signInSuccess }  from "../redux/User/userSlice.js";
 import Oauth from "../Components/OAuth";
 
 function SignIn() {
@@ -46,7 +46,7 @@ function SignIn() {
   };
 
   return (
-    <div className="min-h-screen bg-purple-400 dark:bg-black flex items-center justify-center">
+    <div className="min-h-screen bg-purple-400 dark:bg-[rgb(7,14,19)] flex items-center justify-center">
       <div className="flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5">
         {/* left */}
         <div className="flex-1 text-center md:text-left">
@@ -71,7 +71,7 @@ function SignIn() {
               <Label value="Password" className="font-bold"></Label>
               <TextInput type="password" id="password" onChange={handleChange} placeholder="********" />
             </div>
-            <Button gradientDuoTone="purpleToBlue" type="submit" disabled={loading} className="text-black">
+            <Button gradientDuoTone="purpleToPink" type="submit" disabled={loading} className="text-black">
               {
                 loading ? (
                   <>
