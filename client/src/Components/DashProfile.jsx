@@ -5,7 +5,6 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { Link, useNavigate } from 'react-router-dom';
-import { supabase } from "../supabaseClient.js"; // Import Supabase client
 import { updateStart, updateSuccess, updateFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess, signoutSuccess } from "../redux/User/userSlice.js";
 
 function DashProfile() {
@@ -51,25 +50,28 @@ function DashProfile() {
     setIsUploading(true);
     setImageFileUploadError(null);
 
-    const fileName = `${currentUser._id}_${new Date().getTime()}_${imageFile.name}`;
+    const formData = new FormData();
+    formData.append('file', imageFile);
+    formData.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET); // Replace with your upload preset
 
     try {
-      const { error } = await supabase.storage
-        .from('avatars')
-        .upload(fileName, imageFile);
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
 
-      if (error) {
-        throw new Error(error.message);
+      if (!response.ok) {
+        throw new Error('Failed to upload image');
       }
 
-      const { data: urlData } = supabase.storage
-        .from('avatars')
-        .getPublicUrl(fileName);
-
-      setImageFileUrl(urlData.publicUrl);
+      const data = await response.json();
+      setImageFileUrl(data.secure_url);
       setFormData((prev) => ({
         ...prev,
-        profilePicture: urlData.publicUrl,
+        profilePicture: data.secure_url, // Store the Cloudinary image URL
       }));
     } catch (error) {
       setImageFileUploadError('Failed to upload image');
@@ -164,9 +166,12 @@ function DashProfile() {
 
   const handleSignOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        console.log(error.message);
+      const res = await fetch('/api/user/signout', {
+        method: 'POST',
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
       } else {
         dispatch(signoutSuccess());
         navigate("/sign-in");
