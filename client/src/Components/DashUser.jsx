@@ -25,10 +25,10 @@ export default function DashUser() {
             setShowMore(false);
           }
         } else {
-          console.error('Error fetching users:', data.message);
+          console.error("Error fetching users:", data.message);
         }
       } catch (error) {
-        console.error('Error:', error);
+        console.error("Error:", error);
       }
     };
     if (currentUser.isAdmin) {
@@ -51,7 +51,7 @@ export default function DashUser() {
           setShowMore(false);
         }
       } else {
-        console.error('Error fetching more users:', data.message);
+        console.error("Error fetching more users:", data.message);
       }
     } catch (error) {
       console.log(error);
@@ -62,7 +62,7 @@ export default function DashUser() {
     setShowModal(false);
     try {
       const response = await fetch(`/api/user/delete/${userIdToDelete}`, {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
           Authorization: `Bearer ${currentUser.token}`,
         },
@@ -71,7 +71,7 @@ export default function DashUser() {
       if (!response.ok) {
         console.log(data.message);
       } else {
-        setUsers(users.filter(user => user._id !== userIdToDelete));
+        setUsers(users.filter((user) => user._id !== userIdToDelete));
       }
     } catch (error) {
       console.log(error);
@@ -93,27 +93,45 @@ export default function DashUser() {
             </Table.Head>
             <Table.Body className="divide-y">
               {users.map((user) => (
-                <Table.Row key={user._id} className="border-white bg-slate-50 hover:bg-purple-400 dark:border-gray-700 dark:bg-gray-800">
+                <Table.Row
+                  key={user._id}
+                  className="border-white bg-slate-50 hover:bg-purple-400 dark:border-gray-700 dark:bg-gray-800"
+                >
                   <Table.Cell>
                     {new Date(user.createdAt).toLocaleDateString()}
                   </Table.Cell>
                   <Table.Cell>
-                    <img src={user.profilePicture} alt={user.username} className="w-10 h-10 object-cover bg-gray-400 rounded-full" />
+                    <img
+                      src={user.profilePicture}
+                      alt={user.username}
+                      className="w-10 h-10 object-cover bg-gray-400 rounded-full"
+                    />
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="font-medium text-gray-950 dark:text-gray-50">{user.username}</span>
+                    <span className="font-medium text-gray-950 dark:text-gray-50">
+                      {user.username}
+                    </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="font-medium text-gray-950 dark:text-gray-50">{user.email}</span>
+                    <span className="font-medium text-gray-950 dark:text-gray-50">
+                      {user.email}
+                    </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="font-medium">{user.isAdmin ? "Admin" : "User"}</span>
+                    <span className="font-medium">
+                      {user.isAdmin ? "Admin" : "User"}
+                    </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <button className="text-red-500 font-medium hover:underline cursor-pointer" onClick={() => {
-                      setShowModal(true);
-                      setUserIdToDelete(user._id);
-                    }}>Delete</button>
+                    <button
+                      className="text-red-500 font-medium hover:underline cursor-pointer"
+                      onClick={() => {
+                        setShowModal(true);
+                        setUserIdToDelete(user._id);
+                      }}
+                    >
+                      Delete
+                    </button>
                   </Table.Cell>
                 </Table.Row>
               ))}
@@ -133,15 +151,26 @@ export default function DashUser() {
       ) : (
         <p>You have no users yet.</p>
       )}
-      <Modal show={showModal} onClose={() => setShowModal(false)} popup size="md">
+      <Modal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        popup
+        size="md"
+      >
         <Modal.Header />
         <Modal.Body>
           <div className="text-center">
             <HiOutlineExclamationCircle className="h-14 w-14 text-gray-500 dark:text-gray-300 mb-4 mx-auto" />
-            <h3 className="mb-5 text-lg text-gray-600 dark:text-gray-400">Are you sure you want to delete this user?</h3>
+            <h3 className="mb-5 text-lg text-gray-600 dark:text-gray-400">
+              Are you sure you want to delete this user?
+            </h3>
             <div className="flex justify-center gap-6">
-              <Button color="failure" onClick={handleDeleteUser}>Yes, I am sure</Button>
-              <Button color="gray" onClick={() => setShowModal(false)}>Cancel</Button>
+              <Button color="failure" onClick={handleDeleteUser}>
+                Yes, I am sure
+              </Button>
+              <Button color="gray" onClick={() => setShowModal(false)}>
+                Cancel
+              </Button>
             </div>
           </div>
         </Modal.Body>
