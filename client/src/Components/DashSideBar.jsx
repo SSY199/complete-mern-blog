@@ -12,7 +12,7 @@ import {
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { signoutSuccess } from "../redux/User/userSlice.js";
+import { signoutSuccess } from "../redux/user/userSlice.js";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 

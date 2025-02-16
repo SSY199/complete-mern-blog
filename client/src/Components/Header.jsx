@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux/theme/userTheme.js";
-import { signoutSuccess } from "../redux/User/userSlice.js";
+import { signoutSuccess } from "../redux/user/userSlice.js";
 import { useEffect, useState } from "react";
 import { Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from 'react-icons/hi'; 

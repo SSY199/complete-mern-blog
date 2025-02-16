@@ -5,7 +5,7 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { Link, useNavigate } from 'react-router-dom';
-import { updateStart, updateSuccess, updateFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess, signoutSuccess } from "../redux/User/userSlice.js";
+import { updateStart, updateSuccess, updateFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess, signoutSuccess } from "../redux/user/userSlice.js";
 
 function DashProfile() {
   const { currentUser, error, loading } = useSelector((state) => state.user);
