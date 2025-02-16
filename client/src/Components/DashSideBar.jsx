@@ -38,7 +38,7 @@ function DashSidebar() {
   }, [location.search]);
 
   return (
-    <Sidebar className="md:w-56 bg-gray-100 dark:bg-gray-800">
+    <Sidebar className="md:w-56 shadow-2xl bg-gray-100 dark:bg-gray-800">
       <Sidebar.Items>
         <Sidebar.ItemGroup className="flex flex-col gap-1">
           {
@@ -55,7 +55,7 @@ function DashSidebar() {
             )
           }
           <Sidebar.Item
-            as='button'
+            as={Link}
             to="/dashboard?tab=profile"
             active={tab === "profile"}
             icon={HiUser}

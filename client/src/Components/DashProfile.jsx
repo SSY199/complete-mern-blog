@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Alert, Button, Modal, TextInput } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -15,7 +14,6 @@ function DashProfile() {
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [imageFileUploadError, setImageFileUploadError] = useState(null);
-  const [imageFileUploadProgress, setImageFileUploadProgress] = useState(0);
   const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
   const [updateUserError, setUpdateUserError] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -63,10 +61,10 @@ function DashProfile() {
         ...prev,
         profilePicture: urlData.publicUrl,
       }));
-      setIsUploading(false);
     } catch (error) {
       setImageFileUploadError('Failed to upload image');
       console.error(error);
+    } finally {
       setIsUploading(false);
     }
   };
@@ -82,13 +80,31 @@ function DashProfile() {
     e.preventDefault();
     setUpdateUserError(null);
     setUpdateUserSuccess(null);
+  
+    // Validate username length
+    if (formData.username && (formData.username.length < 7 || formData.username.length > 15)) {
+      setUpdateUserError("Username must be between 7 to 15 characters");
+      return;
+    }
+  
+    // Validate password length
+    if (formData.password && formData.password.length < 6) {
+      setUpdateUserError("Password must be at least 6 characters long");
+      return;
+    }
+  
+    // Check if no changes were made
     if (Object.keys(formData).length === 0) {
       setUpdateUserError("No changes made");
       return;
     }
+  
+    // Check if image is still uploading
     if (isUploading) {
+      setUpdateUserError("Please wait for the image to finish uploading");
       return;
     }
+  
     try {
       dispatch(updateStart());
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
@@ -99,6 +115,7 @@ function DashProfile() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
+  
       if (!res.ok) {
         dispatch(updateFailure(data.message));
         setUpdateUserError(data.message);
@@ -157,8 +174,8 @@ function DashProfile() {
         <div className="relative w-32 h-32 self-center cursor-pointer shadow-md overflow-hidden rounded-full" onClick={() => filePickerRef.current.click()}>
           {isUploading && (
             <CircularProgressbar
-              value={imageFileUploadProgress || 0}
-              text={`${imageFileUploadProgress}%`}
+              value={0} // Progress tracking not supported
+              text="Uploading..."
               strokeWidth={5}
               styles={{
                 root: {
@@ -169,7 +186,7 @@ function DashProfile() {
                   left: 0,
                 },
                 path: {
-                  stroke: `rgba(62, 152, 199, ${imageFileUploadProgress / 100})`,
+                  stroke: `rgba(62, 152, 199, 0.5)`,
                 },
               }}
             />
