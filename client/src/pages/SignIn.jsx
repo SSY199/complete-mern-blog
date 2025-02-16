@@ -4,7 +4,7 @@ import { TextInput } from "flowbite-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signInFailure, signInStart, signInSuccess }  from "../redux/User/userSlice.js";
-import Oauth from "../Components/OAuth";
+import Oauth from "../Components/Oauth";
 
 function SignIn() {
   const [formData, setFormData] = useState({
