@@ -17,6 +17,7 @@ function DashProfile() {
   const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
   const [updateUserError, setUpdateUserError] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [modalContent, setModalContent] = useState({ title: "", message: "", action: null });
   const [formData, setFormData] = useState({});
   const filePickerRef = useRef();
   const dispatch = useDispatch();
@@ -25,6 +26,15 @@ function DashProfile() {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Validate file type and size
+      if (!file.type.startsWith('image/')) {
+        setImageFileUploadError('Please upload an image file');
+        return;
+      }
+      if (file.size > 2 * 1024 * 1024) { // 2MB limit
+        setImageFileUploadError('File size must be less than 2MB');
+        return;
+      }
       setImageFile(file);
       setImageFileUrl(URL.createObjectURL(file));
     }
@@ -80,31 +90,31 @@ function DashProfile() {
     e.preventDefault();
     setUpdateUserError(null);
     setUpdateUserSuccess(null);
-  
+
     // Validate username length
     if (formData.username && (formData.username.length < 7 || formData.username.length > 15)) {
       setUpdateUserError("Username must be between 7 to 15 characters");
       return;
     }
-  
+
     // Validate password length
     if (formData.password && formData.password.length < 6) {
       setUpdateUserError("Password must be at least 6 characters long");
       return;
     }
-  
+
     // Check if no changes were made
     if (Object.keys(formData).length === 0) {
       setUpdateUserError("No changes made");
       return;
     }
-  
+
     // Check if image is still uploading
     if (isUploading) {
       setUpdateUserError("Please wait for the image to finish uploading");
       return;
     }
-  
+
     try {
       dispatch(updateStart());
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
@@ -115,7 +125,7 @@ function DashProfile() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-  
+
       if (!res.ok) {
         dispatch(updateFailure(data.message));
         setUpdateUserError(data.message);
@@ -164,6 +174,11 @@ function DashProfile() {
     } catch (error) {
       console.log(error.message);
     }
+  };
+
+  const openModal = (title, message, action) => {
+    setModalContent({ title, message, action });
+    setShowModal(true);
   };
 
   return (
@@ -230,8 +245,8 @@ function DashProfile() {
         )}
       </form>
       <div className="text-red-600 flex justify-between mt-5">
-        <span onClick={() => setShowModal(true)} className="cursor-pointer">Delete Account</span>
-        <span onClick={handleSignOut} className="cursor-pointer">Sign Out</span>
+        <span onClick={() => openModal("Delete Account", "Are you sure you want to delete your account?", handleDeleteUser)} className="cursor-pointer">Delete Account</span>
+        <span onClick={() => openModal("Sign Out", "Are you sure you want to sign out?", handleSignOut)} className="cursor-pointer">Sign Out</span>
       </div>
       {updateUserSuccess && (
         <Alert color="success" className="mt-5">
@@ -249,18 +264,17 @@ function DashProfile() {
         </Alert>
       )}
       <Modal show={showModal} onClose={() => setShowModal(false)} popup size="md">
-        <Modal.Header>
-          <Modal.Body>
-            <div className="text-center">
-              <HiOutlineExclamationCircle className="h-14 w-14 text-gray-500 dark:text-gray-300 mb-4 mx-auto" />
-              <h3 className="mb-5 text-lg text-gray-600 dark:text-gray-400">Are you sure you want to delete your account?</h3>
-              <div className="flex justify-center gap-6">
-                <Button color="failure" onClick={handleDeleteUser}>Yes, I am sure</Button>
-                <Button color="gray" onClick={() => setShowModal(false)}>Cancel</Button>
-              </div>
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="h-14 w-14 text-gray-500 dark:text-gray-300 mb-4 mx-auto" />
+            <h3 className="mb-5 text-lg text-gray-600 dark:text-gray-400">{modalContent.message}</h3>
+            <div className="flex justify-center gap-6">
+              <Button color="failure" onClick={modalContent.action}>Yes, I am sure</Button>
+              <Button color="gray" onClick={() => setShowModal(false)}>Cancel</Button>
             </div>
-          </Modal.Body>
-        </Modal.Header>
+          </div>
+        </Modal.Body>
       </Modal>
     </div>
   );
