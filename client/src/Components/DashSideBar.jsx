@@ -55,7 +55,7 @@ function DashSidebar() {
             )
           }
           <Sidebar.Item
-            as={Link}
+            as='button'
             to="/dashboard?tab=profile"
             active={tab === "profile"}
             icon={HiUser}
