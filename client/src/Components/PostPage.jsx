@@ -34,28 +34,25 @@ export default function PostPage() {
     fetchPost();
   }, [postSlug]);
 
-
   useEffect(() => {
     try {
       const fetchRecentPosts = async () => {
         const response = await fetch("/api/post/getposts?limit=3");
         const data = await response.json();
-        if(response.ok) {
-        setRecentPosts(data.posts.slice(0, 3));
+        if (response.ok) {
+          setRecentPosts(data.posts.slice(0, 3));
         }
       };
       fetchRecentPosts();
     } catch (error) {
       console.log(error.message);
     }
-}, []);
-
-
+  }, []);
 
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <Spinner size="xl"></Spinner>
+        <Spinner size="xl" />
       </div>
     );
   }
@@ -68,61 +65,71 @@ export default function PostPage() {
     );
   }
 
-return (
-      <main className='p-3 flex flex-col max-w-8xl mx-auto min-h-screen'>
-        <h1 className='text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl'>
-          {post && post.title}
-        </h1>
-        <Link
-          to={`/search?category=${post && post.category}`}
-          className='self-center mt-5'
-        >
-          <Button color='gray' pill size='xs'>
-            {post && post.category}
-          </Button>
-        </Link>
+  return (
+    <main className="p-3 flex flex-col max-w-8xl mx-auto min-h-screen">
+      {/* Post Title */}
+      <h1 className="text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl">
+        {post && post.title}
+      </h1>
+      <Link to={`/search?category=${post && post.category}`} className="self-center mt-5">
+        <Button color="gray" pill size="xs">
+          {post && post.category}
+        </Button>
+      </Link>
+
+      {/* Post Image Section with Hover and Modal */}
+      <div className="relative mt-10 group">
         <img
           src={post && post.image}
           alt={post && post.title}
-          className='mt-10 p-3 max-h-[600px] max-w-4xl object-cover justify-center items-center mx-auto w-full rounded-lg shadow-lg cursor-pointer'
+          className="max-h-[600px] max-w-4xl object-cover justify-center items-center mx-auto w-full rounded-lg shadow-lg cursor-pointer transition-transform transform group-hover:scale-105"
+          onClick={() => setIsModalOpen(true)} // Open modal on image click
         />
-        <div className='flex justify-between p-3 border-b border-slate-500 mx-auto w-full max-w-2xl text-xs'>
-          <span>{post && new Date(post.createdAt).toLocaleDateString()}</span>
-          <span className='italic'>
-            {post && (post.content.length / 1000).toFixed(0)} mins read
-          </span>
-        </div>
-        <div
-          className='p-3 max-w-2xl mx-auto w-full post-content'
-          dangerouslySetInnerHTML={{ __html: post && post.content }}
-        ></div>
-        <div className='max-w-4xl mx-auto w-full'>
-          <CallToAction />
-        </div>
-        <CommentSection postId={post._id} />
-
-        <div className='flex flex-col justify-center items-center mb-5'>
-          <h1 className='text-xl mt-5'>Recent articles</h1>
-          <div className='flex flex-wrap gap-5 max-w-8xl mt-5 justify-center'>
-            {recentPosts &&
-              recentPosts.map((post) => <PostCard key={post._id} post={post} />)}
-          </div>
-        </div>
-
         {isModalOpen && (
-  <div
-    className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50"
-    onClick={() => setIsModalOpen(false)}
-  >
-    <img
-      src={post?.image}
-      alt={post?.title}
-      className="max-w-full max-h-full rounded-lg shadow-lg object-contain"
-    />
-  </div>
-)}
+          <div
+            className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50 transition-all duration-300"
+            onClick={() => setIsModalOpen(false)}
+          >
+            <img
+              src={post?.image}
+              alt={post?.title}
+              className="max-w-full max-h-full rounded-lg shadow-lg object-contain"
+            />
+          </div>
+        )}
+      </div>
 
-      </main>
+      {/* Post Metadata (Date and Read Time) */}
+      <div className="flex justify-between p-3 border-b border-slate-500 mx-auto w-full max-w-2xl text-xs">
+        <span>{post && new Date(post.createdAt).toLocaleDateString()}</span>
+        <span className="italic">
+          {post && (post.content.length / 1000).toFixed(0)} mins read
+        </span>
+      </div>
 
+      {/* Post Content */}
+      <div className="p-3 max-w-2xl mx-auto w-full post-content">
+        <div dangerouslySetInnerHTML={{ __html: post && post.content }} />
+      </div>
+
+      {/* Call to Action */}
+      <div className="max-w-4xl mx-auto w-full my-10">
+        <CallToAction />
+      </div>
+
+      {/* Comment Section */}
+      <CommentSection postId={post._id} />
+
+      {/* Recent Posts Section */}
+      <div className="flex flex-col justify-center items-center mb-5 mt-20">
+        <h1 className="text-xl mt-5">Recent articles</h1>
+        <div className="flex flex-wrap gap-5 max-w-8xl mt-5 justify-center">
+          {recentPosts &&
+            recentPosts.map((post) => (
+              <PostCard key={post._id} post={post} />
+            ))}
+        </div>
+      </div>
+    </main>
   );
 }
