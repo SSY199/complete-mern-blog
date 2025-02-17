@@ -43,11 +43,14 @@ function Header() {
         console.log(data.message);
       } else {
         dispatch(signoutSuccess());
+        setShowSignOutModal(false); // Close the modal after signout
+        navigate("/"); // Redirect to home or another page if needed
       }
     } catch (error) {
       console.log(error.message);
     }
   };
+  
 
   return (
     <Navbar className="dark:border-gray-700 bg-purple-600 text-white border-b border-gray-300">

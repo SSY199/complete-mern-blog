@@ -61,16 +61,25 @@ export const signin = async (req, res, next) => {
 
 export const google = async (req, res, next) => {
   const { name, email, googlePhotoUrl } = req.body;
+
+  // Validate request body
+  if (!name || !email || !googlePhotoUrl) {
+    return res.status(400).json({ message: 'Missing required fields' });
+  }
+
   try {
     const user = await User.findOne({ email });
+
     if (user) {
-      const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.JWT_SECRET );
+      // User exists, generate token
+      const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.JWT_SECRET, { expiresIn: '1h' });
       const { password, ...rest } = user._doc;
       return res.status(200).cookie('access_token', token, {
         httpOnly: true,
       }).json(rest);
     } else {
-      const generatedPassword = Math.random().toString(26).slice(-8);
+      // Create new user
+      const generatedPassword = Math.random().toString(36).slice(-8);
       const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
       const newUser = new User({
         username: name.toLowerCase().split(' ').join('') + Math.random().toString(9).slice(-5),
@@ -78,11 +87,11 @@ export const google = async (req, res, next) => {
         password: hashedPassword,
         profilePicture: googlePhotoUrl,
       });
-      
+
       await newUser.save();
       const token = jwt.sign({ id: newUser._id, isAdmin: newUser.isAdmin }, process.env.JWT_SECRET, { expiresIn: '1h' });
       const { password, ...rest } = newUser._doc;
-        res.status(201).cookie('access_token', token, {
+      return res.status(201).cookie('access_token', token, {
         httpOnly: true,
       }).json(rest);
     }
