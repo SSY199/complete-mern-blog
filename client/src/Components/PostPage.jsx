@@ -60,7 +60,9 @@ export default function PostPage() {
   if (showError) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <p className="text-red-600 text-lg">Error loading post. Please try again later.</p>
+        <p className="text-red-600 text-lg">
+          Error loading post. Please try again later.
+        </p>
       </div>
     );
   }
@@ -71,7 +73,10 @@ export default function PostPage() {
       <h1 className="text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl">
         {post && post.title}
       </h1>
-      <Link to={`/search?category=${post && post.category}`} className="self-center mt-5">
+      <Link
+        to={`/search?category=${post && post.category}`}
+        className="self-center mt-5"
+      >
         <Button color="gray" pill size="xs">
           {post && post.category}
         </Button>
@@ -125,9 +130,7 @@ export default function PostPage() {
         <h1 className="text-xl mt-5">Recent articles</h1>
         <div className="flex flex-wrap gap-5 max-w-8xl mt-5 justify-center">
           {recentPosts &&
-            recentPosts.map((post) => (
-              <PostCard key={post._id} post={post} />
-            ))}
+            recentPosts.map((post) => <PostCard key={post._id} post={post} />)}
         </div>
       </div>
     </main>
