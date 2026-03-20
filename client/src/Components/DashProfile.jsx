@@ -241,13 +241,13 @@ function DashProfile() {
         <Button type="submit" gradientDuoTone="purpleToBlue" outline disabled={loading || isUploading}>
           {loading ? "Loading..." : "Update"}
         </Button>
-        {currentUser.isAdmin && (
+         
           <Link to={'/createpost'}>
             <Button type="button" gradientDuoTone="purpleToPink" className="w-full">
               Create a Post
             </Button>
           </Link>
-        )}
+         
       </form>
       <div className="text-red-600 flex justify-between mt-5">
         <span onClick={() => openModal("Delete Account", "Are you sure you want to delete your account?", handleDeleteUser)} className="cursor-pointer">Delete Account</span>

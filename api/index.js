@@ -7,6 +7,9 @@ import postRoutes from './routes/post.route.js';
 import commentRoutes from './routes/comment.route.js';
 import cookieParser from 'cookie-parser';
 import path from 'path';
+import dns from 'dns';
+
+dns.setServers(['1.1.1.1', '8.8.8.8']);
 
 dotenv.config();
 

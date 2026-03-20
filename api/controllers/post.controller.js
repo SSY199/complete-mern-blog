@@ -3,9 +3,9 @@ import Post from '../models/post.model.js'
  
 export const create = async (req, res, next) => {
    
-  if (!req.user.isAdmin) {
-    return next(errorHandler(403, "You are not allowed to create a post"));
-  }
+  // if (!req.user.isAdmin) {
+  //   return next(errorHandler(403, "You are not allowed to create a post"));
+  // }
   if (!req.body.title || !req.body.content) {
     return next(errorHandler(400, "Title and content are required"));
   }

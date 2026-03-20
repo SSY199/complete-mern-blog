@@ -31,9 +31,10 @@ export default function App() {
         </Route>
         <Route element={<OnlyAdmin />}
         >
-          <Route path="/createpost" element={<CreatePost />} />
+          {/* <Route path="/createpost" element={<CreatePost />} /> */}
           <Route path="/update-post/:postId" element={<UpdatePost />} />
         </Route>
+        <Route path="/createpost" element={<CreatePost />} />
         <Route path="/post/:postSlug" element={<PostPage />} />
       </Routes>
       <Footer />
