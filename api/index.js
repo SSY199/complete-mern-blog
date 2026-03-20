@@ -24,9 +24,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-app.listen(5353, () => {
-  console.log('Server is running on port 5353');
-});
+
 
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
@@ -49,3 +47,9 @@ app.use((err, req, res, next) => {
       message
      })
 });
+
+app.listen(5353, () => {
+  console.log('Server is running on port 5353');
+});
+
+export default app;
